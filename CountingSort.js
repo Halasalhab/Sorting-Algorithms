@@ -1,5 +1,4 @@
-import inputs from "./Inputs.js";
-const countingSort = (inputArr, n = inputArr.length) => {
+export const countingSort = (inputArr, n = inputArr.length) => {
     let k = Math.max(...inputArr);
     let t;
     //Create a temporary with 0 zero value 
@@ -33,4 +32,3 @@ const countingSort = (inputArr, n = inputArr.length) => {
 
     return outputArr;
 }
-console.log(countingSort(inputs[4]));

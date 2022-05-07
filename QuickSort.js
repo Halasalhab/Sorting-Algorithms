@@ -1,58 +1,55 @@
-import inputs from "./Inputs.js";
 const swap = (arr, left, right) => {
     const temp = arr[left]
     arr[left] = arr[right]
     arr[right] = temp;
 }
-const partitionMiddle = (arr, low, high) => {
-    //Get the mid index
-    const mid = Math.floor((low + high) / 2);
-    //Swap the mid element with first element
-    swap(arr, mid, low);
 
-    //Now use the first element as pivot
-    let pivot = arr[low];
-    let lo = low + 1;
-    let hi = high;
+const partitionHigh = (arr, low, high) => {
+    //Pick the first element as pivot
+    let pivot = arr[high];
+    let i = low;
 
-    //Partition the array based on the pivot
-    while (lo <= hi) {
-        //Move towards each other
-        while (arr[hi] > pivot) {
-            hi = hi - 1
-        }
-
-        while (lo <= hi && arr[lo] <= pivot) {
-            lo = lo + 1;
-        }
-
-        //When inversion found swap the elements
-        if (lo <= hi) {
-            swap(arr, lo, hi);
-            lo = lo + 1;
-            hi = hi - 1;
+    //Partition the array into two parts using the pivot
+    for (let j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            swap(arr, i, j);
+            i++;
         }
     }
 
-    swap(arr, low, hi);
+    swap(arr, i, high);
 
     //Return the pivot index
-    return hi;
+    return i;
 }
 
-const quicksort = (arr, low, high) => {
-    // base condition
-    if (low >= high) {
-        return;
+export const quickSort = (arr) => {
+    //Stack for storing start and end index
+    let stack = [];
+
+    //Get the start and end index
+    let start = 0;
+    let end = arr.length - 1;
+
+    //Push start and end index in the stack
+    stack.push({ x: start, y: end });
+
+    //Iterate the stack
+    while (stack.length) {
+        //Get the start and end from the stack
+        const { x, y } = stack.shift();
+
+        //Partition the array along the pivot
+        const PI = partitionHigh(arr, x, y);
+
+        //Push sub array with less elements than pivot into the stack
+        if (PI - 1 > x) {
+            stack.push({ x: x, y: PI - 1 });
+        }
+
+        //Push sub array with greater elements than pivot into the stack
+        if (PI + 1 < y) {
+            stack.push({ x: PI + 1, y: y });
+        }
     }
-
-    // rearrange the elements across pivot
-    const pivot = partitionMiddle(arr, low, high);
-
-    // recur on sub-array containing elements less than pivot
-    quicksort(arr, low, pivot - 1);
-
-    // recur on sub-array containing elements more than pivot
-    quicksort(arr, pivot + 1, high);
 }
-console.log(quicksort(inputs[0], inputs[0][0], inputs[0][inputs[0].length - 1]))

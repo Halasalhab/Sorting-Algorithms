@@ -1,4 +1,9 @@
 {
-    "type": "module"
-
+    "type": "module",
+    "noUnusedParameters": false,
+    "dependencies": {
+        "perf_hooks": "^0.0.1",
+        "present": "^1.0.0",
+        "universal-perf-hooks": "^1.0.1"
+    }
 }
